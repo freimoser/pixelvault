@@ -22,14 +22,11 @@ let allFiles = [];
 function openLightbox(name) {
   lightboxImg.src = rawUrl(name);
   lightboxImg.alt = name;
-  lightbox.classList.remove("hidden");
   lightbox.classList.add("show");
 }
 
 function closeLightbox() {
   lightbox.classList.remove("show");
-  lightbox.classList.add("hidden");
-  lightboxImg.src = "";
 }
 
 lightboxClose.addEventListener("click", closeLightbox);

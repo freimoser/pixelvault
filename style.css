@@ -274,12 +274,17 @@ footer code {
   justify-content: center;
   padding: 40px;
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.18s ease;
+  /* visibility flips instantly (0s); only the delay differs, so the panel is
+     never dependent on a transition actually running to become visible. */
+  transition: opacity 0.18s ease, visibility 0s linear 0.18s;
 }
 .lightbox.show {
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
+  transition: opacity 0.18s ease, visibility 0s linear 0s;
 }
 .lightbox img {
   max-width: 100%;
