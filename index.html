@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>pixelvault</title>
 <meta name="description" content="Private Bildergalerie zur Nutzung als Bild-CDN in Metabase & anderen Tools.">
-<meta name="robots" content="noindex, nofollow">
+<meta name="robots" content="noindex, nofollow, noarchive, noimageindex, nosnippet">
+<meta name="googlebot" content="noindex, nofollow, noarchive, noimageindex, nosnippet">
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,6 +48,11 @@
   </footer>
 
   <div id="toast" class="toast"></div>
+
+  <div id="lightbox" class="lightbox hidden">
+    <button class="lightbox-close" id="lightbox-close" type="button" aria-label="Schlie&szlig;en">&times;</button>
+    <img id="lightbox-img" src="" alt="">
+  </div>
 
   <script src="script.js"></script>
 </body>

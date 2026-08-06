@@ -13,8 +13,32 @@ const stats = document.getElementById("stats");
 const empty = document.getElementById("empty");
 const errorEl = document.getElementById("error");
 const toast = document.getElementById("toast");
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightbox-img");
+const lightboxClose = document.getElementById("lightbox-close");
 
 let allFiles = [];
+
+function openLightbox(name) {
+  lightboxImg.src = rawUrl(name);
+  lightboxImg.alt = name;
+  lightbox.classList.remove("hidden");
+  lightbox.classList.add("show");
+}
+
+function closeLightbox() {
+  lightbox.classList.remove("show");
+  lightbox.classList.add("hidden");
+  lightboxImg.src = "";
+}
+
+lightboxClose.addEventListener("click", closeLightbox);
+lightbox.addEventListener("click", (e) => {
+  if (e.target === lightbox) closeLightbox();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeLightbox();
+});
 
 function rawUrl(name) {
   return `https://raw.githubusercontent.com/${CONFIG.owner}/${CONFIG.repo}/${CONFIG.branch}/${CONFIG.path}/${encodeURIComponent(name)}`;
@@ -64,6 +88,7 @@ function render(files) {
     img.loading = "lazy";
     img.alt = file.name;
     thumb.appendChild(img);
+    thumb.addEventListener("click", () => openLightbox(file.name));
 
     const body = document.createElement("div");
     body.className = "card-body";
