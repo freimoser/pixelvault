@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pixelvault</title>
+<meta name="description" content="Private Bildergalerie zur Nutzung als Bild-CDN in Metabase & anderen Tools.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-mark"></span>
+        <span class="brand-name">pixelvault</span>
+      </div>
+      <a class="repo-link" href="https://github.com/Freemoser/pixelvault" target="_blank" rel="noopener">Repo &#8599;</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Bild-Tresor f&uuml;r Metabase &amp; Co.</h1>
+      <p class="hero-sub">Alle Bilder werden per Git hochgeladen und sind sofort per direkter URL verf&uuml;gbar &ndash; ideal zum Einbinden in Dashboards und Tools.</p>
+    </section>
+
+    <section class="toolbar">
+      <div class="search-wrap">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="search" type="text" placeholder="Nach Dateiname suchen&hellip;" autocomplete="off">
+      </div>
+      <div class="stats" id="stats">l&auml;dt&hellip;</div>
+    </section>
+
+    <section id="grid" class="grid" aria-live="polite"></section>
+    <p id="empty" class="empty hidden">Keine Bilder gefunden.</p>
+    <p id="error" class="error hidden"></p>
+  </main>
+
+  <footer>
+    <p>Neues Bild hinzuf&uuml;gen: Datei in <code>/images</code> legen, committen, pushen &ndash; fertig.</p>
+  </footer>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
