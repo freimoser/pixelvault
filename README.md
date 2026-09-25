@@ -2,7 +2,7 @@
 
 Private Bildergalerie & Bild-CDN auf GitHub Pages. Dient dazu, eigene PNGs/Bilder per Git hochzuladen und sie direkt per URL in Metabase-Dashboards oder anderen Tools einzubinden.
 
-Live: https://freemoser.github.io/pixelvault/
+Live: https://freimoser.github.io/pixelvault/
 
 ## Neues Bild hinzufügen
 
@@ -22,7 +22,7 @@ Live: https://freemoser.github.io/pixelvault/
 Jedes Bild ist direkt erreichbar unter:
 
 ```
-https://raw.githubusercontent.com/Freemoser/pixelvault/main/images/<dateiname>
+https://raw.githubusercontent.com/freimoser/pixelvault/main/images/<dateiname>
 ```
 
 Auf der Galerie-Seite kopiert der "Kopieren"-Button pro Bild automatisch diese URL in die Zwischenablage.

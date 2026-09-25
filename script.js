@@ -1,5 +1,5 @@
 const CONFIG = {
-  owner: "Freemoser",
+  owner: "freimoser",
   repo: "pixelvault",
   branch: "main",
   path: "images",
