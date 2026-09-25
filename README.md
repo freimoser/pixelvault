@@ -29,7 +29,15 @@ Auf der Galerie-Seite kopiert der "Kopieren"-Button pro Bild automatisch diese U
 
 ## Hinweis zur Sichtbarkeit
 
-Das Repo ist öffentlich, da GitHub Pages + direktes Hotlinking (raw.githubusercontent.com) für kostenlose Accounts nur bei öffentlichen Repos zuverlässig funktioniert. Die Bilder sind damit über die direkte URL erreichbar, werden aber nirgends aktiv beworben oder indexiert (`robots: noindex`).
+Das Repo ist öffentlich, da GitHub Pages + direktes Hotlinking (raw.githubusercontent.com) für kostenlose Accounts nur bei öffentlichen Repos zuverlässig funktioniert.
+
+Was die Seite aus Suchmaschinen heraushält, sind die `noindex`-Meta-Tags in den HTML-Dateien. Eine `robots.txt` hilft hier **nicht**: Crawler lesen sie nur an der Wurzel des Hosts (`freimoser.github.io/robots.txt`), nie in einem Projektordner wie `/pixelvault/`. Deshalb gibt es bewusst keine.
+
+Grenze: Die Bild-Adressen auf raw.githubusercontent.com liegen außerhalb dieser Seite und tragen kein `noindex`. Wer eine Adresse kennt, kann das Bild abrufen.
+
+## Rechtliches
+
+`impressum.html` und `datenschutz.html`, beide `noindex, follow`. Die Seite setzt keine Cookies und lädt keine externen Schriften; die Datenschutzerklärung beschreibt genau das. Wird etwas eingebunden (Messung, Search-Console-Tag, Schrift), muss die Erklärung im selben Commit angepasst werden.
 
 ## Tech
 

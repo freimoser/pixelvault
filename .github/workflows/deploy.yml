@@ -24,6 +24,11 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      # Bricht den Deploy ab, bevor ein schon einmal gemachter Fehler live geht:
+      # externe Google-Schrift, fehlendes noindex, fehlende Rechtstexte,
+      # abgeschaltetes Favicon, wirkungslose robots.txt, alter GitHub-Name.
+      - name: Livegang-Prüfung
+        run: ./scripts/check.sh
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

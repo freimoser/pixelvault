@@ -7,10 +7,15 @@
 <meta name="description" content="Private Bildergalerie zur Nutzung als Bild-CDN in Metabase & anderen Tools.">
 <meta name="robots" content="noindex, nofollow, noarchive, noimageindex, nosnippet">
 <meta name="googlebot" content="noindex, nofollow, noarchive, noimageindex, nosnippet">
-<link rel="icon" href="data:,">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-96.png" sizes="96x96" type="image/png">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<!-- Keine Schrift vom Google-Fonts-Server: Das übertrug bei jedem Aufruf die
+     IP-Adresse ohne Einwilligung an Google. Die Schriftliste in style.css nimmt
+     Inter, wenn lokal installiert, sonst die Systemschrift. -->
+
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -45,6 +50,7 @@
 
   <footer>
     <p>Neues Bild hinzuf&uuml;gen: Datei in <code>/images</code> legen, committen, pushen &ndash; fertig.</p>
+    <p class="legal"><a href="impressum.html">Impressum</a> &middot; <a href="datenschutz.html">Datenschutz</a></p>
   </footer>
 
   <div id="toast" class="toast"></div>

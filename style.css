@@ -314,3 +314,46 @@ footer code {
   border-color: var(--border-hover);
   color: var(--accent-bright);
 }
+
+/* --- Rechtsseiten & Footer-Links ----------------------------------------- */
+footer p.legal { margin-top: 8px; }
+footer p.legal a { color: var(--text-muted); }
+footer p.legal a:hover { color: var(--accent); }
+
+.doc { max-width: 680px; }
+.doc h1 {
+  font-size: clamp(24px, 4vw, 30px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 24px;
+}
+.doc h2 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 28px 0 8px;
+  color: var(--text-primary);
+}
+.doc p, .doc li {
+  color: var(--text-secondary);
+  font-size: 14.5px;
+  line-height: 1.7;
+  margin: 0 0 10px;
+}
+.doc ul { padding-left: 20px; margin: 0 0 10px; }
+.doc .summary {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 9px;
+  padding: 14px 16px;
+  margin-bottom: 8px;
+}
+.doc .summary p { margin: 0; color: var(--text-primary); }
+.doc .stand { color: var(--text-dim); font-size: 12.5px; margin-top: 32px; }
+.back-link { display: inline-block; font-size: 13px; color: var(--text-secondary); margin-bottom: 20px; }
+.back-link:hover { color: var(--accent); }
+
+/* Abschnittsnummern per Zähler, nie von Hand: Kommt ein Abschnitt dazu oder
+   fällt weg, stimmt die Zählung trotzdem. */
+.doc.numbered { counter-reset: abschnitt; }
+.doc.numbered h2::before { counter-increment: abschnitt; content: counter(abschnitt) ". "; }
