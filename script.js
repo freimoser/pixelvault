@@ -38,7 +38,7 @@ let lightboxOpener = null;
 function openLightbox(name) {
   lightboxOpener = document.activeElement;
   lightboxImg.src = rawUrl(name);
-  lightboxImg.alt = name;
+  lightboxImg.alt = altFor(name);
   lightbox.classList.add("show");
   lightboxClose.focus();
 }
@@ -95,8 +95,13 @@ async function copyText(text, button, toastMessage) {
 // Metabase-Textkarten rendern Markdown. Mit diesem Format ist das Bild nach
 // dem Einfügen sofort sichtbar, statt dass man die URL von Hand einrahmt.
 function markdownFor(name) {
-  const alt = name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ");
-  return `![${alt}](${rawUrl(name)})`;
+  return `![${altFor(name)}](${rawUrl(name)})`;
+}
+
+// Lesbarer Name statt Dateiname: Ein Screenreader liest sonst
+// "petleo minus project minus failed punkt png" vor.
+function altFor(name) {
+  return name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ").trim();
 }
 
 function render(files) {
@@ -113,11 +118,11 @@ function render(files) {
     const thumb = document.createElement("button");
     thumb.type = "button";
     thumb.className = "card-thumb";
-    thumb.setAttribute("aria-label", `Großansicht öffnen: ${file.name}`);
+    thumb.setAttribute("aria-label", `Großansicht öffnen: ${altFor(file.name)}`);
     const img = document.createElement("img");
     img.src = rawUrl(file.name);
     img.loading = "lazy";
-    img.alt = file.name;
+    img.alt = altFor(file.name);
     thumb.appendChild(img);
     thumb.addEventListener("click", () => openLightbox(file.name));
 
