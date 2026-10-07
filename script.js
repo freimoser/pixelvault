@@ -7,6 +7,18 @@ const CONFIG = {
 
 const IMAGE_EXT = /\.(png|jpe?g|gif|webp|svg|avif)$/i;
 
+// Ab hier gilt ein Bild als schwer für eine Dashboard-Karte.
+const HEAVY_BYTES = 500 * 1000;
+
+// Dezimal (1 MB = 1.000.000 Byte) wie im macOS-Finder — sonst zeigt die
+// Galerie für dieselbe Datei eine andere Zahl als der Rechner, von dem sie kommt.
+function formatBytes(bytes) {
+  if (bytes >= 1e6) {
+    return `${(bytes / 1e6).toLocaleString("de-DE", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} MB`;
+  }
+  return `${Math.max(1, Math.round(bytes / 1e3)).toLocaleString("de-DE")} KB`;
+}
+
 const grid = document.getElementById("grid");
 const search = document.getElementById("search");
 const stats = document.getElementById("stats");
@@ -111,10 +123,25 @@ function render(files) {
 
     const body = document.createElement("div");
     body.className = "card-body";
+    const meta = document.createElement("div");
+    meta.className = "card-meta";
     const nameEl = document.createElement("span");
     nameEl.className = "card-name";
     nameEl.textContent = file.name;
     nameEl.title = file.name;
+    meta.appendChild(nameEl);
+
+    // Ein Bild in einer Dashboard-Karte wird bei jedem Aufruf komplett
+    // geladen. Die Größe liefert die API ohnehin mit; ab HEAVY_BYTES wird
+    // sie markiert, damit ein zu großes Bild auffällt, bevor es eingebunden ist.
+    const sizeEl = document.createElement("span");
+    sizeEl.className = "card-size";
+    sizeEl.textContent = formatBytes(file.size);
+    if (file.size >= HEAVY_BYTES) {
+      sizeEl.classList.add("heavy");
+      sizeEl.title = "Groß für ein Dashboard — vor dem Einbinden verkleinern";
+    }
+    meta.appendChild(sizeEl);
     const copyBtn = document.createElement("button");
     copyBtn.className = "card-copy";
     copyBtn.type = "button";
@@ -135,7 +162,7 @@ function render(files) {
       copyText(markdownFor(file.name), mdBtn, "Markdown kopiert"),
     );
 
-    body.appendChild(nameEl);
+    body.appendChild(meta);
     body.appendChild(copyBtn);
     body.appendChild(mdBtn);
     card.appendChild(thumb);

@@ -30,6 +30,8 @@ Auf der Galerie-Seite hat jedes Bild zwei Knöpfe:
 - **URL** kopiert die nackte Bild-Adresse.
 - **MD** kopiert fertiges Markdown (`![name](url)`). Das in eine Metabase-Textkarte einfügen, und das Bild erscheint direkt.
 
+Unter jedem Namen steht die Dateigröße. Ab 500 KB ist sie gelb markiert: Ein Bild in einer Dashboard-Karte wird bei jedem Aufruf komplett geladen, also vor dem Einbinden verkleinern.
+
 ## Hinweis zur Sichtbarkeit
 
 Das Repo ist öffentlich, da GitHub Pages + direktes Hotlinking (raw.githubusercontent.com) für kostenlose Accounts nur bei öffentlichen Repos zuverlässig funktioniert.
