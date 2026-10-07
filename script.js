@@ -189,7 +189,21 @@ async function loadFiles() {
         applyFilter();
         return;
       }
-      throw new Error(`GitHub API antwortete mit ${res.status}`);
+      // Ohne Anmeldung erlaubt GitHub 60 Abfragen pro Stunde und IP-Adresse.
+      // Ist das aufgebraucht, kommt 403 oder 429 — und eine nackte Statuszahl
+      // über einer leeren Galerie sieht aus wie ein Defekt, nicht wie Warten.
+      const remaining = res.headers.get("x-ratelimit-remaining");
+      const reset = Number(res.headers.get("x-ratelimit-reset"));
+      if ((res.status === 403 || res.status === 429) && remaining === "0" && reset) {
+        const at = new Date(reset * 1000).toLocaleTimeString("de-DE", {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+        throw new Error(
+          `GitHub erlaubt ohne Anmeldung 60 Abfragen pro Stunde, und die sind aufgebraucht. Ab ${at} Uhr lädt die Galerie wieder. Die Bild-Adressen in Metabase funktionieren davon unabhängig weiter.`,
+        );
+      }
+      throw new Error(`GitHub antwortete mit Status ${res.status}.`);
     }
     const data = await res.json();
     allFiles = (Array.isArray(data) ? data : [])
@@ -198,7 +212,13 @@ async function loadFiles() {
     applyFilter();
   } catch (err) {
     stats.textContent = "";
-    errorEl.textContent = `Konnte Bilder nicht laden: ${err.message}`;
+    // fetch wirft bei fehlender Verbindung einen TypeError mit englischem,
+    // browserabhängigem Text ("Failed to fetch", "Load failed").
+    const reason =
+      err instanceof TypeError
+        ? "Keine Verbindung zu GitHub — Internetverbindung prüfen und neu laden."
+        : err.message;
+    errorEl.textContent = `Bilder konnten nicht geladen werden. ${reason}`;
     errorEl.classList.remove("hidden");
   }
 }
