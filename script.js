@@ -19,14 +19,25 @@ const lightboxClose = document.getElementById("lightbox-close");
 
 let allFiles = [];
 
+// Das Element, das die Großansicht geöffnet hat — dorthin kehrt der Fokus beim
+// Schließen zurück, sonst landet eine Tastatur-Nutzerin wieder am Seitenanfang.
+let lightboxOpener = null;
+
 function openLightbox(name) {
+  lightboxOpener = document.activeElement;
   lightboxImg.src = rawUrl(name);
   lightboxImg.alt = name;
   lightbox.classList.add("show");
+  lightboxClose.focus();
 }
 
 function closeLightbox() {
+  if (!lightbox.classList.contains("show")) return;
   lightbox.classList.remove("show");
+  if (lightboxOpener && typeof lightboxOpener.focus === "function") {
+    lightboxOpener.focus();
+  }
+  lightboxOpener = null;
 }
 
 lightboxClose.addEventListener("click", closeLightbox);
@@ -78,8 +89,12 @@ function render(files) {
     const card = document.createElement("div");
     card.className = "card";
 
-    const thumb = document.createElement("div");
+    // Ein Button statt eines div: nur so ist die Großansicht per Tab und
+    // Enter erreichbar und wird von Screenreadern als Bedienelement angesagt.
+    const thumb = document.createElement("button");
+    thumb.type = "button";
     thumb.className = "card-thumb";
+    thumb.setAttribute("aria-label", `Großansicht öffnen: ${file.name}`);
     const img = document.createElement("img");
     img.src = rawUrl(file.name);
     img.loading = "lazy";

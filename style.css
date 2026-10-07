@@ -357,3 +357,27 @@ footer p.legal a:hover { color: var(--accent); }
    fällt weg, stimmt die Zählung trotzdem. */
 .doc.numbered { counter-reset: abschnitt; }
 .doc.numbered h2::before { counter-increment: abschnitt; content: counter(abschnitt) ". "; }
+
+/* --- Vorschaubild als Button ------------------------------------------- */
+/* Browser geben Buttons Rahmen, Innenabstand und eine eigene Schrift mit;
+   die Kachel soll aussehen wie vorher, nur jetzt bedienbar sein. */
+button.card-thumb {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  font: inherit;
+  color: inherit;
+}
+
+/* Sichtbarer Fokus nur bei Tastaturbedienung, nicht bei jedem Mausklick. */
+.card-thumb:focus-visible,
+.card-copy:focus-visible,
+.lightbox-close:focus-visible,
+#search:focus-visible,
+footer a:focus-visible,
+.repo-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
