@@ -59,25 +59,32 @@ function showToast(message) {
   showToast._t = setTimeout(() => toast.classList.remove("show"), 1600);
 }
 
-async function copyUrl(name, button) {
-  const url = rawUrl(name);
+async function copyText(text, button, toastMessage) {
   try {
-    await navigator.clipboard.writeText(url);
+    await navigator.clipboard.writeText(text);
   } catch {
     const tmp = document.createElement("textarea");
-    tmp.value = url;
+    tmp.value = text;
     document.body.appendChild(tmp);
     tmp.select();
     document.execCommand("copy");
     tmp.remove();
   }
-  showToast("URL kopiert");
+  showToast(toastMessage);
+  const label = button.textContent;
   button.textContent = "Kopiert";
   button.classList.add("copied");
   setTimeout(() => {
-    button.textContent = "Kopieren";
+    button.textContent = label;
     button.classList.remove("copied");
   }, 1400);
+}
+
+// Metabase-Textkarten rendern Markdown. Mit diesem Format ist das Bild nach
+// dem Einfügen sofort sichtbar, statt dass man die URL von Hand einrahmt.
+function markdownFor(name) {
+  const alt = name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ");
+  return `![${alt}](${rawUrl(name)})`;
 }
 
 function render(files) {
@@ -111,11 +118,26 @@ function render(files) {
     const copyBtn = document.createElement("button");
     copyBtn.className = "card-copy";
     copyBtn.type = "button";
-    copyBtn.textContent = "Kopieren";
-    copyBtn.addEventListener("click", () => copyUrl(file.name, copyBtn));
+    copyBtn.textContent = "URL";
+    copyBtn.title = "Bild-URL kopieren";
+    copyBtn.setAttribute("aria-label", `Bild-URL kopieren: ${file.name}`);
+    copyBtn.addEventListener("click", () =>
+      copyText(rawUrl(file.name), copyBtn, "URL kopiert"),
+    );
+
+    const mdBtn = document.createElement("button");
+    mdBtn.className = "card-copy";
+    mdBtn.type = "button";
+    mdBtn.textContent = "MD";
+    mdBtn.title = "Als Markdown kopieren – für Metabase-Textkarten";
+    mdBtn.setAttribute("aria-label", `Als Markdown kopieren: ${file.name}`);
+    mdBtn.addEventListener("click", () =>
+      copyText(markdownFor(file.name), mdBtn, "Markdown kopiert"),
+    );
 
     body.appendChild(nameEl);
     body.appendChild(copyBtn);
+    body.appendChild(mdBtn);
     card.appendChild(thumb);
     card.appendChild(body);
     frag.appendChild(card);

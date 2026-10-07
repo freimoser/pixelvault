@@ -25,7 +25,10 @@ Jedes Bild ist direkt erreichbar unter:
 https://raw.githubusercontent.com/freimoser/pixelvault/main/images/<dateiname>
 ```
 
-Auf der Galerie-Seite kopiert der "Kopieren"-Button pro Bild automatisch diese URL in die Zwischenablage.
+Auf der Galerie-Seite hat jedes Bild zwei Knöpfe:
+
+- **URL** kopiert die nackte Bild-Adresse.
+- **MD** kopiert fertiges Markdown (`![name](url)`). Das in eine Metabase-Textkarte einfügen, und das Bild erscheint direkt.
 
 ## Hinweis zur Sichtbarkeit
 
