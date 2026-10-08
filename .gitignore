@@ -1,2 +1,5 @@
 .DS_Store
 images/einlesen/
+
+# Vorschaubilder entstehen beim Deploy (scripts/thumbs.py), nie committen
+/thumbs/

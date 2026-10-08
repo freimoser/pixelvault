@@ -23,10 +23,25 @@ for f in impressum.html datenschutz.html; do
 done
 
 # Favicon: Dateien da und eingebunden (sonst Standard-Globus im Tab).
-for f in favicon.svg favicon.ico favicon-32.png favicon-96.png apple-touch-icon.png; do
+for f in favicon.svg favicon.ico favicon-32.png favicon-96.png apple-touch-icon.png 404.html; do
   [ -f "$f" ] || err "$f fehlt"
 done
 grep -q 'rel="icon" href="data:,"' index.html && err "Favicon ist per data:, abgeschaltet"
+
+# Die 404-Seite wird unter beliebigen Pfaden ausgeliefert — relative Verweise
+# zeigen dort ins Leere.
+grep -qE '(href|src)="(style\.css|favicon|impressum|datenschutz|\./)' 404.html 2>/dev/null \
+  && err "404.html enthält relative Pfade — nur /pixelvault/... verwenden"
+
+# Lokale CSS/JS-Verweise brauchen ?v=dev — der Deploy ersetzt das durch die
+# Commit-Kennung. Ohne sie mischt der 10-Minuten-Cache von GitHub Pages nach
+# einem Deploy neues HTML mit altem CSS.
+# Kein "| while": hinter einer Pipe liefe die Schleife in einer Subshell, und
+# err() könnte $fail nicht setzen — der Blocker würde gemeldet, aber ignoriert.
+for f in *.html; do
+  bad=$(grep -oE '(href|src)="[^"]*\.(css|js)(\?[^"]*)?"' "$f" | grep -v '="https\?://' | grep -v '?v=dev"')
+  [ -n "$bad" ] && while read -r ref; do err "$f: $ref ohne ?v=dev"; done <<< "$bad"
+done
 
 # Eine robots.txt im Projektordner täuscht Schutz nur vor.
 [ -f robots.txt ] && err "robots.txt im Projektordner ist wirkungslos — entfernen"

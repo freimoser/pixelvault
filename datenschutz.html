@@ -4,18 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Datenschutz · pixelvault</title>
+<meta name="description" content="Datenschutzerklärung der pixelvault-Bildergalerie: keine Cookies, keine Messung, Bilder kommen von GitHub.">
 <meta name="robots" content="noindex, follow">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-96.png" sizes="96x96" type="image/png">
 <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="stylesheet" href="style.css">
+<meta name="theme-color" content="#05070d">
+<link rel="stylesheet" href="style.css?v=dev">
 </head>
 <body>
-  <header class="topbar">
-    <div class="topbar-inner">
-      <a class="brand" href="./" style="color:inherit">
-        <span class="brand-mark"></span>
+  <header class="bar">
+    <div class="bar-inner">
+      <a class="brand" href="./">
+        <span class="brand-mark" aria-hidden="true"></span>
         <span class="brand-name">pixelvault</span>
       </a>
     </div>
@@ -61,9 +63,11 @@
       <h2>Laden der Bilder</h2>
       <p>
         Die Galerie fragt die Liste der Bilder bei der Programmierschnittstelle
-        von GitHub ab (api.github.com) und lädt die Bilder von
-        raw.githubusercontent.com. Beides geschieht direkt aus deinem Browser,
-        weshalb GitHub auch dabei deine IP-Adresse erhält. Das ist für die
+        von GitHub ab (api.github.com). Die kleinen Vorschaubilder liegen auf
+        dieser Seite selbst, also ebenfalls bei GitHub Pages; erst die
+        Großansicht lädt das Original von raw.githubusercontent.com. All das
+        geschieht direkt aus deinem Browser, weshalb GitHub auch dabei deine
+        IP-Adresse erhält. Das ist für die
         Funktion der Galerie erforderlich; Rechtsgrundlage ist Art. 6 Abs. 1
         lit. f DSGVO.
       </p>
@@ -109,12 +113,16 @@
         statt.
       </p>
 
-      <p class="stand">Stand: September 2026</p>
+      <p class="stand">Stand: Oktober 2026</p>
     </article>
   </main>
 
-  <footer>
-    <p class="legal"><a href="impressum.html">Impressum</a> &middot; <a href="datenschutz.html">Datenschutz</a></p>
+  <footer class="site-footer">
+    <nav>
+      <a href="./">Galerie</a>
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+    </nav>
   </footer>
 </body>
 </html>

@@ -4,62 +4,74 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>pixelvault</title>
-<meta name="description" content="Private Bildergalerie zur Nutzung als Bild-CDN in Metabase & anderen Tools.">
+<meta name="description" content="Private Bildergalerie: eigene Bilder als URL oder Markdown kopieren und in Metabase & anderen Tools einbinden.">
 <meta name="robots" content="noindex, nofollow, noarchive, noimageindex, nosnippet">
 <meta name="googlebot" content="noindex, nofollow, noarchive, noimageindex, nosnippet">
+<meta name="theme-color" content="#05070d">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-96.png" sizes="96x96" type="image/png">
 <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="favicon.ico" sizes="48x48">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<!-- Die Bildliste kommt von api.github.com (per fetch, daher crossorigin), die
+     Großansicht von raw.githubusercontent.com. Die Verbindung vorab aufzubauen
+     spart laut Lighthouse rund 300 ms. -->
+<link rel="preconnect" href="https://api.github.com" crossorigin>
+<link rel="preconnect" href="https://raw.githubusercontent.com">
 <!-- Keine Schrift vom Google-Fonts-Server: Das übertrug bei jedem Aufruf die
-     IP-Adresse ohne Einwilligung an Google. Die Schriftliste in style.css nimmt
-     Inter, wenn lokal installiert, sonst die Systemschrift. -->
-
-<link rel="stylesheet" href="style.css">
+     IP-Adresse ohne Einwilligung an Google. Die Schriftliste nimmt Inter, wenn
+     lokal installiert, sonst die Systemschrift. -->
+<link rel="stylesheet" href="style.css?v=dev">
 </head>
 <body>
-  <header class="topbar">
-    <div class="topbar-inner">
-      <div class="brand">
-        <span class="brand-mark"></span>
-        <span class="brand-name">pixelvault</span>
-      </div>
-      <a class="repo-link" href="https://github.com/freimoser/pixelvault" target="_blank" rel="noopener">Repo &#8599;</a>
+  <header class="bar">
+    <div class="bar-inner">
+      <a class="brand" href="./">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <h1 class="brand-name">pixelvault</h1>
+      </a>
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="search" type="search" placeholder="Bilder durchsuchen" aria-label="Bilder nach Dateiname durchsuchen" autocomplete="off" spellcheck="false">
+        <kbd aria-hidden="true">/</kbd>
+      </label>
+      <span class="count" id="stats" aria-live="polite">lädt …</span>
     </div>
   </header>
 
   <main>
-    <section class="hero">
-      <h1>Bild-Tresor f&uuml;r Metabase &amp; Co.</h1>
-      <p class="hero-sub">Alle Bilder werden per Git hochgeladen und sind sofort per direkter URL verf&uuml;gbar &ndash; ideal zum Einbinden in Dashboards und Tools.</p>
-    </section>
-
-    <section class="toolbar">
-      <div class="search-wrap">
-        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input id="search" type="text" placeholder="Nach Dateiname suchen&hellip;" autocomplete="off">
-      </div>
-      <div class="stats" id="stats">l&auml;dt&hellip;</div>
-    </section>
-
-    <section id="grid" class="grid" aria-live="polite"></section>
-    <p id="empty" class="empty hidden">Keine Bilder gefunden.</p>
-    <p id="error" class="error hidden"></p>
+    <p class="intro">Eigene Bilder für Metabase &amp; Co. <b>URL</b> oder <b>MD</b> kopieren und einfügen. Mit <kbd>/</kbd> suchen, <kbd>Enter</kbd> kopiert die URL des ersten Treffers.</p>
+    <section id="grid" class="grid" aria-label="Bilder"></section>
+    <p id="empty" class="empty" hidden>Keine Bilder gefunden.</p>
+    <p id="error" class="error" hidden></p>
   </main>
 
-  <footer>
-    <p>Neues Bild hinzuf&uuml;gen: Datei in <code>/images</code> legen, committen, pushen &ndash; fertig.</p>
-    <p class="legal"><a href="impressum.html">Impressum</a> &middot; <a href="datenschutz.html">Datenschutz</a></p>
+  <footer class="site-footer">
+    <span>Neues Bild: in <code>images/</code> legen, committen, pushen.</span>
+    <nav>
+      <a href="https://github.com/freimoser/pixelvault" rel="noopener">GitHub</a>
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+    </nav>
   </footer>
 
-  <div id="toast" class="toast"></div>
-
-  <div id="lightbox" class="lightbox">
-    <button class="lightbox-close" id="lightbox-close" type="button" aria-label="Schlie&szlig;en">&times;</button>
-    <img id="lightbox-img" src="" alt="">
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-labelledby="lb-name">
+    <div class="lb-panel">
+      <img id="lightbox-img" alt="">
+      <div class="lb-bar">
+        <div class="lb-meta">
+          <span id="lb-name" class="name"></span>
+          <span id="lb-size" class="size"></span>
+        </div>
+        <button id="lb-url" class="act" type="button">URL kopieren</button>
+        <button id="lb-md" class="act" type="button">MD kopieren</button>
+        <button id="lightbox-close" class="icon-btn" type="button" aria-label="Schließen">&times;</button>
+      </div>
+    </div>
   </div>
 
-  <script src="script.js"></script>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js?v=dev"></script>
 </body>
 </html>

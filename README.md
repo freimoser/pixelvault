@@ -15,7 +15,9 @@ Live: https://freimoser.github.io/pixelvault/
    git push
    ```
 
-3. Fertig — die Galerie liest den Ordnerinhalt live über die GitHub API und zeigt das Bild ohne Build-Schritt an.
+3. Fertig. Die Bild-URL funktioniert, sobald der Push durch ist. Die Galerie zeigt das Bild sofort; das kleine Vorschaubild dazu entsteht beim Deploy, der rund eine halbe Minute dauert.
+
+   **Ein Bild ersetzen** (gleicher Dateiname): raw.githubusercontent.com hält Dateien bis zu 5 Minuten im Zwischenspeicher. Bis dahin kann in Metabase noch die alte Version erscheinen.
 
 ## Bild-URL für Metabase & Co.
 
@@ -29,6 +31,8 @@ Auf der Galerie-Seite hat jedes Bild zwei Knöpfe:
 
 - **URL** kopiert die nackte Bild-Adresse.
 - **MD** kopiert fertiges Markdown (`![name](url)`). Das in eine Metabase-Textkarte einfügen, und das Bild erscheint direkt.
+
+Schneller per Tastatur: `/` springt in die Suche, **Enter** kopiert die URL des ersten Treffers, **Umschalt+Enter** dessen Markdown. Ein Klick aufs Bild öffnet die Großansicht, dort gibt es dieselben beiden Knöpfe.
 
 Unter jedem Namen steht die Dateigröße. Ab 500 KB ist sie gelb markiert: Ein Bild in einer Dashboard-Karte wird bei jedem Aufruf komplett geladen, also vor dem Einbinden verkleinern.
 
@@ -46,4 +50,9 @@ Grenze: Die Bild-Adressen auf raw.githubusercontent.com liegen außerhalb dieser
 
 ## Tech
 
-Reines statisches HTML/CSS/JS, kein Build-Schritt, keine Abhängigkeiten. Die Startseite fragt die GitHub Contents API für `images/` ab und rendert die Galerie client-seitig.
+Statisches HTML/CSS/JS ohne Abhängigkeiten im Browser. Die Startseite fragt die GitHub Contents API für `images/` ab und rendert die Galerie client-seitig.
+
+Beim Deploy (`.github/workflows/deploy.yml`) laufen zwei Schritte:
+
+1. `scripts/check.sh` bricht ab bei externer Google-Schrift, fehlendem `noindex`, fehlenden Rechtstexten oder Favicons, relativen Pfaden in `404.html`, einer `robots.txt` im Ordner oder dem alten GitHub-Namen.
+2. `scripts/thumbs.py` erzeugt WebP-Vorschaubilder (max. 480 px breit) nach `thumbs/`. Sie landen nur im ausgelieferten Artefakt, nie im Repo. Die Originale bleiben unverändert, damit keine eingebettete URL bricht. Fehlt eine Vorschau, lädt die Galerie das Original.

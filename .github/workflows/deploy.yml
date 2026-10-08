@@ -29,6 +29,22 @@ jobs:
       # abgeschaltetes Favicon, wirkungslose robots.txt, alter GitHub-Name.
       - name: Livegang-Prüfung
         run: ./scripts/check.sh
+      # Kleine WebP-Vorschauen für die Galerie, nur im Artefakt, nie im Repo.
+      # Die Originale unter images/ bleiben unverändert — ihre raw-Adressen
+      # stecken in Metabase und dürfen sich nie ändern.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Vorschaubilder erzeugen
+        run: |
+          python -m pip install --quiet pillow
+          python scripts/thumbs.py
+      # GitHub Pages lässt Browser HTML, CSS und JS zehn Minuten zwischen-
+      # speichern. Ohne Versionsangabe bekommt ein wiederkehrender Besucher
+      # nach einem Deploy neues HTML mit altem CSS. Die Commit-Kennung im
+      # Dateiverweis hält zusammengehörige Versionen zusammen.
+      - name: Cache-Versionen setzen
+        run: sed -i "s/?v=dev/?v=${GITHUB_SHA::7}/g" *.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
